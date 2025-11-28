@@ -11,6 +11,10 @@ public abstract class Node {
         return parent;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
 
     public abstract void addChild(Node node);
 }

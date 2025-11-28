@@ -1,4 +1,5 @@
 import java.util.Hashtable;
+import java.util.Stack;
 
 public class FileSystem {
     Directory root;
@@ -60,6 +61,13 @@ public class FileSystem {
         else {
             File newF = new File(name, currentDirectory, content);
             currentDirectory.addChild(newF);
+        }
+    }
+
+    public void pwd() {
+        Stack<String> names = new Stack<>();
+        while (currentDirectory.getParent() != root) {
+            names.push(currentDirectory.getName()); // Incomplete path building.
         }
     }
 
