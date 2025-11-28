@@ -52,6 +52,17 @@ public class FileSystem {
         currentDirectory.addChild(newF);
     }
 
+    public void echo(String content, String name) {
+        if (currentDirectory.exists(name)) {
+            File child = (File) currentDirectory.getChild(name);
+            child.setContent(content);
+        }
+        else {
+            File newF = new File(name, currentDirectory, content);
+            currentDirectory.addChild(newF);
+        }
+    }
+
 
 
     // If path is relative: go through children

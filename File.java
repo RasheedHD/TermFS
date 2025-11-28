@@ -5,11 +5,13 @@ public class File extends Node {
     public File(String name, Directory parent, int size) {
         super(name, parent);
         this.size = size;
+        this.content = "";
     }
 
     public File(String name, Directory parent, String content) {
         super(name, parent);
         this.content = content;
+        this.size = content.length();
     }
 
     public void addChild(Node node) {}
@@ -20,5 +22,9 @@ public class File extends Node {
 
     public String getContent() {
         return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
