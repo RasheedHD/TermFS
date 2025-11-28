@@ -7,4 +7,8 @@ public class File extends Node {
         this.content = content;
         this.size = size;
     }
+
+    public void addChild(Node node) {
+
+    }
 }

@@ -1,0 +1,265 @@
+✅ WHAT YOU HAVE TO BUILD (In Simple Words)
+
+You're building a fake file system that lives entirely in memory.
+Your program behaves like a mini Linux terminal.
+Users type commands (mkdir, ls, cd, rm, grep…), and you modify a tree of objects in memory.
+
+The main idea:
+Everything is a Node → Nodes are either Files or Directories → Directories store children in a Hash Table.
+
+✅ THE DATA STRUCTURES YOU MUST USE
+
+Understanding this clearly will make the implementation easy.
+
+1. Node (abstract class)
+
+The base of everything.
+
+name (string)
+
+parent (Directory)
+
+2. File class (inherits Node)
+
+content (String)
+
+size (int) — based on content length OR given size
+
+no children
+
+3. Directory class (inherits Node)
+
+children = HashTable<String, Node>
+
+Key → name of file or directory
+
+Value → Node object
+
+can hold files and subdirectories
+
+forms the tree structure
+
+4. File System Tree
+
+Root directory → /
+
+Every command modifies or reads this tree
+
+Navigation = moving through this tree
+
+Removing = deleting nodes from hash table
+
+tree command = recursively printing the hierarchy (like Linux)
+
+5. KMP (Knuth-Morris-Pratt)
+
+You must use KMP for the grep command.
+
+✅ THE CORE COMMANDS YOU MUST SUPPORT
+
+You must implement these exact behaviors, because the demo will test them:
+
+🌲 Directory Structure Commands
+Command	What it does (simple version)
+mkdir name	Create directory in current directory
+mkdir -p path	Create missing parents as needed
+touch file size	Create file with simulated size
+echo "text" > file	Write/overwrite content into file
+ls	List current directory contents
+cd path	Change directory (relative, absolute, ..)
+pwd	Print full path
+rm name	Remove file or empty directory
+rm -r name	Remove directory recursively
+tree	Print structure like Linux
+du	Total size of current directory
+grep pattern file	Search file content with KMP
+✅ STEP-BY-STEP SMART APPROACH (THE WINNING STRATEGY)
+
+This is the cleanest, fastest, and safest way to complete the project.
+
+STEP 1 — Build the Class Structure FIRST (1–2 hours)
+
+Do not start with parsing commands.
+Start with the skeleton:
+
+✔ Node
+✔ File
+✔ Directory
+✔ FileSystem class (root + current directory)
+
+If this structure is clean, the entire project becomes simple.
+
+STEP 2 — Implement Directory Lookup (Key Part)
+
+You will need a function:
+
+Directory.getChild(String name)
+
+
+Since directories use hash tables, lookup is O(1).
+This will be used by almost every command.
+
+Also implement:
+
+addChild(node)
+removeChild(name)
+exists(name)
+isFileOrDir(name)
+
+
+Once lookup works, all commands become easy.
+
+STEP 3 — Implement Path Navigation (cd + path resolving)
+
+You must support:
+
+relative paths → docs/reports
+
+absolute paths → /home/user
+
+parent → ..
+
+Best approach:
+
+Split the path by /
+
+Use a temporary pointer starting from:
+
+root if path starts with /
+
+current directory if not
+
+For each token:
+
+"" → skip
+
+"." → skip
+
+".." → move to parent
+
+normal name → lookup in hash table
+
+If anything fails, print the error.
+
+Once you get path navigation working, half the project is solved.
+
+STEP 4 — Implement Simple Commands (mkdir, touch, echo, ls)
+
+These don’t require recursion.
+They only involve:
+
+checking existence
+
+inserting into hash table
+
+updating content
+
+Tip:
+mkdir -p is the same as repeatedly calling mkdir on each part.
+
+STEP 5 — Implement Recursion Commands (tree, du, rm -r)
+
+These are the easiest once your structure is clean.
+
+tree
+
+Write a recursive function that:
+
+prints current node
+
+for each child, call tree(child) with indentation
+
+This is a direct recursion problem.
+
+du
+
+Recursively sum:
+
+file sizes → return size
+
+directories → sum sizes of all children
+
+rm -r
+
+Recursively remove children, then remove directory itself.
+
+STEP 6 — Implement grep Using KMP
+
+You already know KMP from class.
+Steps:
+
+Build prefix table from pattern
+
+Run KMP on file.content
+
+Print “found” or “not found”
+
+Test it with overlapping patterns (like sample 10).
+
+STEP 7 — Implement Command Parser
+
+This is the final step.
+
+A good design choice:
+
+Read the entire input line
+
+Split the command and arguments
+
+Use if/else or switch-case to call the right function
+
+Example:
+
+Command starts with mkdir → call mkdir handler
+
+Command starts with cd → call cd handler
+
+etc.
+
+⭐ BONUS: HOW TO MAKE YOUR DEMO IMPRESSIVE
+
+In the demo you will be asked to:
+
+Run code live
+
+Explain each part
+
+Modify something on the spot
+
+If you follow the structured design above, you can confidently explain:
+
+How you use hash tables
+
+How you use recursion
+
+Why tree traversal works
+
+How KMP improves efficiency
+
+How inheritance + polymorphism makes Node / File / Directory elegant
+
+This makes you stand out.
+
+🔥 FINAL SUMMARY: DO THESE EXACT STEPS
+
+Build Node → File → Directory classes
+
+Create file system with root /
+
+Implement hash table children lookup
+
+Implement path navigation (cd logic)
+
+Implement mkdir, touch, echo, ls
+
+Implement recursion commands: tree, du, rm -r
+
+Implement grep with KMP
+
+Implement command parser
+
+Test using all sample input/output
+
+Done right, this project becomes very manageable.
+
+Proceed with confidence.

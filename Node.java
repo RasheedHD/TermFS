@@ -7,4 +7,9 @@ public abstract class Node {
         this.parent = parent;
     }
 
+    public Directory getParent() {
+        return parent;
+    }
+
+    public abstract void addChild(Node node);
 }
