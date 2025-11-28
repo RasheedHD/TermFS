@@ -5,10 +5,6 @@ public class Test {
         Scanner scnr = new Scanner(System.in);
         FileSystem fs = new FileSystem(); // Class that we'll be using throughout the program
 
-        fs.mkdir("home");
-        fs.cd("home");
-        fs.mkdir("user");
-        fs.cd("user");
         fs.pwd();
     }
 }

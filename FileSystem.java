@@ -65,6 +65,10 @@ public class FileSystem {
     }
 
     public void pwd() {
+        if (currentDirectory == root) { // Still in the root
+            System.out.println("/");
+            return;
+        }
         String path = "/";
         Stack<String> names = new Stack<>();
         int length;
