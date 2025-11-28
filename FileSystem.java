@@ -65,10 +65,20 @@ public class FileSystem {
     }
 
     public void pwd() {
+        String path = "/";
         Stack<String> names = new Stack<>();
+        int length;
         while (currentDirectory.getParent() != root) {
             names.push(currentDirectory.getName()); // Incomplete path building.
+            currentDirectory = currentDirectory.getParent();
         }
+        names.push(currentDirectory.getName());
+        length = names.toArray().length;
+        for (int i = 0; i < length; i++) {
+            path = (path + names.pop() + "/");
+        }
+
+        System.out.println(path.substring(0,path.length()-1));
     }
 
 

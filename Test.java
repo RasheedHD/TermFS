@@ -6,12 +6,9 @@ public class Test {
         FileSystem fs = new FileSystem(); // Class that we'll be using throughout the program
 
         fs.mkdir("home");
-        fs.ls();
         fs.cd("home");
         fs.mkdir("user");
-        fs.touch("profile", 15);
-        fs.ls();
-        fs.cd("..");
-        fs.ls();
+        fs.cd("user");
+        fs.pwd();
     }
 }
