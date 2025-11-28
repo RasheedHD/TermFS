@@ -37,6 +37,10 @@ public class Directory extends Node {
             return "Error";
     }
 
+    public Hashtable<String, Node> getChildren() {
+        return children;
+    }
+
     @Override
     public String toString() {
         return name; // For testing purposes

@@ -11,5 +11,7 @@ public abstract class Node {
         return parent;
     }
 
+
+
     public abstract void addChild(Node node);
 }

@@ -1,3 +1,5 @@
+import java.util.Hashtable;
+
 public class FileSystem {
     Directory root;
     Directory currentDirectory;
@@ -7,7 +9,7 @@ public class FileSystem {
         currentDirectory = root;
     }
 
-    public void changeDirectory(String path) {
+    public void cd(String path) {
         char firstChar = path.charAt(0);
         if (firstChar == '/') // Start at root if absolute path
             currentDirectory = root;
@@ -20,6 +22,34 @@ public class FileSystem {
                 currentDirectory = (Directory) currentDirectory.getChild(token);  // If token is a normal name, go to child
             }
         }
+    }
+
+    public void mkdir(String name) {
+        Directory newD = new Directory(name, currentDirectory);
+        currentDirectory.addChild(newD);
+    }
+
+    public void mkdir(String name, String path) {
+
+    }
+
+    public void ls() {
+        Hashtable<String, Node> children = currentDirectory.getChildren();
+        for (String key : children.keySet()) {
+            if (children.get(key) instanceof Directory)
+                System.out.print(key + "/\t");
+            else {
+                File f = (File) children.get(key);
+                int size = f.getSize();
+                System.out.print(key + " (" + size + "B)");
+            }
+        }
+        System.out.println();
+    }
+
+    public void touch(String name, int size) {
+        File newF = new File(name, currentDirectory, size);
+        currentDirectory.addChild(newF);
     }
 
 

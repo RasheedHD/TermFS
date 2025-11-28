@@ -5,11 +5,13 @@ public class Test {
         Scanner scnr = new Scanner(System.in);
         FileSystem fs = new FileSystem(); // Class that we'll be using throughout the program
 
-        fs.root.addChild(new Directory("a", fs.root));
-        fs.root.addChild(new Directory("b", fs.root));
-        fs.root.getChild("a").addChild(new Directory("1", (Directory) fs.root.getChild("a")));
-        fs.changeDirectory("a");
-        fs.changeDirectory("../b");
-        System.out.println(fs.currentDirectory);
+        fs.mkdir("home");
+        fs.ls();
+        fs.cd("home");
+        fs.mkdir("user");
+        fs.touch("profile", 15);
+        fs.ls();
+        fs.cd("..");
+        fs.ls();
     }
 }
