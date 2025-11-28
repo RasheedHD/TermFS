@@ -1,5 +1,5 @@
 public class Test {
     public static void main(String[] args) {
-        System.out.println("Hello world");
+        FSTree fsTree = new FSTree(); // Tree that we'll be using throughout the program
     }
 }
