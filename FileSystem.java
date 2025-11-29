@@ -30,8 +30,18 @@ public class FileSystem {
         currentDirectory.addChild(newD);
     }
 
-    public void mkdir(String name, String path) {
-
+    public void mkdirp(String path) {
+        Directory temp = currentDirectory; // Needed to go back to original directory
+        String[] tokens = path.split("/");
+        for (String token: tokens) {
+            if (currentDirectory.exists(token)) // If directory exists, go inside it
+                cd(token);
+            else {
+                mkdir(token); // Create new directory in currentDirectory
+                cd(token); // Go inside it to be able to create a new one for future tokens (changes original directory)
+            }
+        }
+        currentDirectory = temp; // Returns to original directory
     }
 
     public void ls() {
@@ -65,6 +75,7 @@ public class FileSystem {
     }
 
     public void pwd() {
+        Directory temp = currentDirectory; // Needed to return to original directory
         if (currentDirectory == root) { // Still in the root
             System.out.println("/");
             return;
@@ -81,7 +92,7 @@ public class FileSystem {
         for (int i = 0; i < length; i++) {
             path = (path + names.pop() + "/");
         }
-
+        currentDirectory = temp; // Returns to original directory
         System.out.println(path.substring(0,path.length()-1));
     }
 
