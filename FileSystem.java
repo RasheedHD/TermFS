@@ -59,6 +59,7 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
     }
 
     public void touch(String name, int size) { // Adds file given size
+        Directory temp = currentDirectory;
         File newF = new File(name, currentDirectory, size);
         currentDirectory.addChild(newF);
     }
@@ -74,7 +75,7 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
         }
     }
 
-    public void pwd() {
+    public void pwd() { // Prints the path in currentDirectory
         Directory temp = currentDirectory; // Needed to return to original directory
         if (currentDirectory == root) { // Still in the root
             System.out.println("/");
@@ -101,4 +102,8 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
     // If path is relative: go through children
     // If path is absolute: go from the root
     // If path starts with .. (relative): go to parent
+
+
+    //mkdir -p a/b/c
+    //mkdir a/b/c
 }
