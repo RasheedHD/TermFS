@@ -97,7 +97,7 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
         System.out.println(path.substring(0,path.length()-1));
     }
 
-    public void rm(String name) throws Exception{ //removes a file or an empty directory
+    public void rm(String name){ //removes a file or an empty directory
 
           boolean found = currentDirectory.exists(name); //checking if the file or dir exists
 
@@ -114,13 +114,38 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
                     currentDirectory.removeChild(name); //if its empty then just delete it 
                 }
                 else{
-                    throw new Exception("The directory is not empty!"); // if not empty throw errow
+                    System.out.println("The directory is not empty!"); // if not empty throw errow
                 }
             }
           }
 
-          else if (!found) throw new Exception("Such a file or directory was not found");
+          else if (!found) System.out.println("Such a file or directory was not found");
           //i said !found for purposes of better readability
+    }
+
+    public void rmr(String name){
+        if (!currentDirectory.exists(name)) System.out.println("The file or directory does not exist");
+
+        Node node1 = currentDirectory.getChild(name);
+        rmr_helper(node1); // recursive helper
+        currentDirectory.removeChild(name); //removing the target directory itself after deleting all the stuff inside
+    }
+
+    private void rmr_helper(Node node){
+        String FileorDir = currentDirectory.isFileorDir(node); //Checking if the input is a file or directory
+
+            if (FileorDir.equals("F")){  //base case
+                return;
+            }
+            else if (FileorDir.equals("D")){
+                Directory dir = (Directory) node;
+
+                for (Node child : dir.getChildren().values()){ //clearing out the contents of each directories recursively
+                    rmr_helper(child);
+                }
+
+                dir.getChildren().clear(); //then finally clearing the directories themselves
+            }
     }
 
     

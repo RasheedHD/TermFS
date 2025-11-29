@@ -10,8 +10,8 @@ public class Test {
         fs.pwd();
         fs.cd("..");
         fs.pwd();
-        fs.cd("/");
-        fs.pwd();
+        fs.rm("c");
+        fs.cd("a/b/c");
 
     }
 }
