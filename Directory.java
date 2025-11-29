@@ -13,7 +13,7 @@ public class Directory extends Node {
         if (exists(name))
             return children.get(name);
         else
-            throw new NoSuchElementException("Child with name " + name + " doesn't exist."); // Throw exception if child doesn't exist
+            throw new NoSuchElementException("File or Directory with this name " + name + " doesn't exist."); // Throw exception if child doesn't exist
     }
 
     public void addChild(Node node) {
@@ -35,6 +35,10 @@ public class Directory extends Node {
             return "D";
         else
             return "Error";
+    }
+
+    public boolean isEmpty(){ //TO CHECK IF THE DIRECTORY IS EMPTY OR NOT
+        return children.isEmpty();
     }
 
     public Hashtable<String, Node> getChildren() {

@@ -97,13 +97,31 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
         System.out.println(path.substring(0,path.length()-1));
     }
 
+    public void rm(String name) throws Exception{ //removes a file or an empty directory
 
+          boolean found = currentDirectory.exists(name); //checking if the file or dir exists
 
-    // If path is relative: go through children
-    // If path is absolute: go from the root
-    // If path starts with .. (relative): go to parent
+          if (found){
+            Node node1 = currentDirectory.getChild(name);
+            String FileorDir = currentDirectory.isFileorDir(node1); //Checking if the input is a file or directory
 
+            if (FileorDir.equals("F")){ //If its a file then just straight up delete it 
+                currentDirectory.removeChild(name);
+            }
+            else if (FileorDir.equals("D")){ //however if its a directory youll have to check if it's empty
+                Directory dir = (Directory) node1;
+                if (dir.isEmpty()){
+                    currentDirectory.removeChild(name); //if its empty then just delete it 
+                }
+                else{
+                    throw new Exception("The directory is not empty!"); // if not empty throw errow
+                }
+            }
+          }
 
-    //mkdir -p a/b/c
-    //mkdir a/b/c
+          else if (!found) throw new Exception("Such a file or directory was not found");
+          //i said !found for purposes of better readability
+    }
+
+    
 }
