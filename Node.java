@@ -7,6 +7,7 @@ public abstract class Node {
         this.parent = parent;
     }
 
+ // Getters
     public Directory getParent() {
         return parent;
     }
@@ -16,5 +17,5 @@ public abstract class Node {
     }
 
 
-    public abstract void addChild(Node node);
+    public abstract void addChild(Node node); // Abstract method used solely for Directories
 }

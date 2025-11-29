@@ -1,14 +1,14 @@
 public class File extends Node {
     String content;
-    int size;
+    int size; // Simulated size
 
-    public File(String name, Directory parent, int size) {
+    public File(String name, Directory parent, int size) { // Used for touch mainly
         super(name, parent);
         this.size = size;
         this.content = "";
     }
 
-    public File(String name, Directory parent, String content) {
+    public File(String name, Directory parent, String content) { // Used for echo mainly
         super(name, parent);
         this.content = content;
         this.size = content.length();

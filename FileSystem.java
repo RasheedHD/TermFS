@@ -1,13 +1,13 @@
 import java.util.Hashtable;
 import java.util.Stack;
 
-public class FileSystem {
+public class FileSystem { // Most functions don't allow a path to be passed in, needs fixing later.
     Directory root;
     Directory currentDirectory;
 
     public FileSystem() {
-        root = new Directory("/", null);
-        currentDirectory = root;
+        root = new Directory("/", null); // Root is a directory with name "/" and null parent
+        currentDirectory = root; // In the start, currentDirectory points to root
     }
 
     public void cd(String path) {
@@ -44,26 +44,26 @@ public class FileSystem {
         currentDirectory = temp; // Returns to original directory
     }
 
-    public void ls() {
+    public void ls() { // Lists all files/directories in current directory
         Hashtable<String, Node> children = currentDirectory.getChildren();
         for (String key : children.keySet()) {
-            if (children.get(key) instanceof Directory)
+            if (children.get(key) instanceof Directory) // Print directory names as is
                 System.out.print(key + "/\t");
             else {
                 File f = (File) children.get(key);
                 int size = f.getSize();
-                System.out.print(key + " (" + size + "B)");
+                System.out.print(key + " (" + size + "B)"); // Print file names with their sizes
             }
         }
         System.out.println();
     }
 
-    public void touch(String name, int size) {
+    public void touch(String name, int size) { // Adds file given size
         File newF = new File(name, currentDirectory, size);
         currentDirectory.addChild(newF);
     }
 
-    public void echo(String content, String name) {
+    public void echo(String content, String name) { // Adds file given content, or writes to existing file
         if (currentDirectory.exists(name)) {
             File child = (File) currentDirectory.getChild(name);
             child.setContent(content);
