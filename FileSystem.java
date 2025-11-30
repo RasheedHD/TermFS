@@ -52,7 +52,7 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
             else {
                 File f = (File) children.get(key);
                 int size = f.getSize();
-                System.out.print(key + " (" + size + "B)"); // Print file names with their sizes
+                System.out.println(key + " (" + size + "B)"); // Print file names with their sizes
             }
         }
         System.out.println();
@@ -146,6 +146,30 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
 
                 dir.getChildren().clear(); //then finally clearing the directories themselves
             }
+    }
+
+    public void du(){
+        Directory dir = currentDirectory;
+        int diskUsage = du_helper(currentDirectory);
+        System.out.println("Disk Usage: " + diskUsage + "B");
+    }
+
+    public int du_helper(Node node){
+        int size = 0;
+        String FileorDir = currentDirectory.isFileorDir(node);
+
+
+        if (FileorDir.equals("F")){
+                File file = (File) node;  //base case
+                size += file.getSize();
+            }
+        else if (FileorDir.equals("D")){
+                Directory dir = (Directory) node;
+                for (Node child : dir.getChildren().values()){ 
+                    size += du_helper(child);
+                }
+        }
+        return size;
     }
 
     
