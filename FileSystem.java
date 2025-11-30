@@ -48,7 +48,7 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
         Hashtable<String, Node> children = currentDirectory.getChildren();
         for (String key : children.keySet()) {
             if (children.get(key) instanceof Directory) // Print directory names as is
-                System.out.print(key + "/\t");
+                System.out.println(key + "/\t");
             else {
                 File f = (File) children.get(key);
                 int size = f.getSize();

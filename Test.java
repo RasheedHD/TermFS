@@ -5,6 +5,10 @@ public class Test {
         Scanner scnr = new Scanner(System.in);
         FileSystem fs = new FileSystem(); // Class that we'll be using throughout the program
 
+        System.out.println("\nWelcome to this Terminal Based File Management System! ");
+        System.out.println("\nYou can start entering commands right away");
+        System.out.println("----------------");
+
         while (true){
             String input = scnr.nextLine();
             String[] tokens = input.split(" "); //splitting the input by space
@@ -45,7 +49,7 @@ public class Test {
                     fs.du();
                     break;
                 default:      //when the input is not one of the commands, the case is handled by printing invalid command
-                    System.out.println("Invalid command");
+                    System.out.println("\nInvalid command! Please try again");
                     break;
             }
 
