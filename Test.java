@@ -5,30 +5,51 @@ public class Test {
         Scanner scnr = new Scanner(System.in);
         FileSystem fs = new FileSystem(); // Class that we'll be using throughout the program
 
-        fs.mkdirp("a/b/c");
-        fs.cd("a/b/");
-        System.out.println();
-        System.out.println("CURRENT DIRECTORY----------------");
-        fs.pwd();
-        fs.touch("file1", 1);
-        fs.touch("file2", 13);
-        fs.touch("file3", 12);
-        fs.touch("file4", 122);
-        fs.ls();
-        System.out.println("DU TEST----------------");
-        fs.du();
-        System.out.println("DU TEST----------------");
-        fs.mkdir("dir1");
-        fs.cd("dir1");
-        fs.pwd();
-        fs.touch("file1", 2);
-        fs.touch("file2", 13);
-        fs.touch("file3", 23);
-        fs.touch("file4", 10);
-        fs.ls();
-        fs.cd("..");
-        fs.pwd();
-        fs.du();
+        while (true){
+            String input = scnr.nextLine();
+            String[] tokens = input.split(" "); //splitting the input by space
+            switch(tokens[0]){ //so basically, in every kind of input, the first word is always the command and using a switch statement for better readability
+                case "mkdir":
+                    fs.mkdirp(tokens[1]);
+                    break;
+                case "touch":
+                    fs.touch(tokens[1], Integer.parseInt(tokens[2]));
+                    break;
+                case "echo": //first, ill have to get the content, this ill do by locating the two quotation marks and getting the text in between them
+                    int IndexOfFirstQuot = input.indexOf('"'); // first "
+                    int IndexOfSecondQuot = input.lastIndexOf('"'); // second "
+                    String content = input.substring(IndexOfFirstQuot + 1, IndexOfSecondQuot); //there is a +1 to exclude writing the quotation mark itself
+                    String file = tokens[tokens.length - 1]; //the file name is always the last word when inputting this command
+                    fs.echo(content, file);
+                    break;                           
+                case "ls":
+                    fs.ls();
+                    break;                                    //the rest are just calling the corresponding function according to input
+                case "cd":
+                    fs.cd(tokens[1]);
+                    break;
+                case "pwd":
+                    fs.pwd();
+                    break;
+                case "rm":
+                    fs.rm(tokens[1]);
+                    break;
+                case "rmr":
+                    fs.rmr(tokens[1]);
+                    break;
+                case "tree":
+                    break;
+                case "grep":
+                    break;
+                case "du":
+                    fs.du();
+                    break;
+                default:      //when the input is not one of the commands, the case is handled by printing invalid command
+                    System.out.println("Invalid command");
+                    break;
+            }
+
+        }
 
     }
 }
