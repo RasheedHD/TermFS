@@ -176,28 +176,12 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
     }
 
     public void tree(){
-        printer(currentDirectory, 0);
+        printer(currentDirectory);
     }
 
-    private void printer(Node node, int spaces){
-        spaces += 5;
-        String FileorDir = currentDirectory.isFileorDir(node);
-        if (FileorDir.equals("F")){
-            System.out.println("|---" + node); 
-        }
-        else if (FileorDir.equals("D")){
-            Directory dir = (Directory) node;
-            List<Node> nodes = new ArrayList<>();
-            for (Node child : dir.getChildren().values()){
-            nodes.add(child);
-        }
-
-        printer(node, 5);
-        Collections.sort(nodes, new sortByName());
-        for (Node node1 : nodes){
-            System.out.println("|---" + node1); 
-        }
-        }     
+    private void printer(Node node){
+        System.out.println(currentDirectory.getName());    
+        
     }
 
     public void grep(String pattern, String name) {
@@ -237,7 +221,7 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
         int i = 0;
         int j = -1;
         while (i < p.length() - 1) {
-            while ((j == -1) || (p.charAt(i) == p.charAt(j))) {
+            while ((j == -1) || (p.charAt(i) == p.charAt(j))) { //j==-1 takes care of the case where the second element of a next array is always zero
                 i++;
                 j++;
                 next[i] = j; 
