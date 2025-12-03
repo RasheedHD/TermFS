@@ -175,14 +175,33 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
         return size;
     }
 
-    public void tree(){
-        printer(currentDirectory);
-    }
+    public void tree() {
+    System.out.println(".");
+    printer(currentDirectory, "");
+}
 
-    private void printer(Node node){
-        System.out.println(currentDirectory.getName());    
-        
+   private void printer(Node node, String prefix) {
+    Directory directory = (Directory) node;
+    List<Node> children = new ArrayList<>(directory.getChildren().values());
+    Collections.sort(children, new sortByName()); 
+    
+
+    for (int i = 0; i < children.size(); i++) {
+        Node child = children.get(i);
+        boolean isLast = (i == children.size() - 1 ? true : false);
+        String connector = isLast ? "└── " : "├── "; //if it is last the first version will be printed, otherwise second
+
+        if (child instanceof Directory) {
+            System.out.println(prefix + connector + child.getName() + "/");
+            String childPrefix = prefix + (isLast ? "    " : "│   ");
+            printer(child, childPrefix);
+        } else {
+            File file = (File) child;
+            System.out.println(prefix + connector + file.getName() + " (" + file.getSize() + "B)");
+        }
     }
+}
+
 
     public void grep(String pattern, String name) {
 

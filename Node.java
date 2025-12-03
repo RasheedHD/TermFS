@@ -25,7 +25,7 @@ public abstract class Node {
 class sortByName implements Comparator<Node>{
 
     @Override
-    public int compare(Node a, Node b){
+    public int compare(Node a, Node b){ //this was added for the tree method so we can sort the nodes by name
         return a.getName().compareTo(b.getName());
     }
 }
