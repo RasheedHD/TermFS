@@ -182,15 +182,14 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
 
    private void printer(Node node, String prefix) {
     Directory directory = (Directory) node;
-    List<Node> children = new ArrayList<>(directory.getChildren().values());
-    Collections.sort(children, new sortByName()); 
-    
+    List<Node> children = new ArrayList<>(directory.getChildren().values()); //creating an array list of all children from the directory
+    Collections.sort(children, new sortByName()); //sort BY NAME using the comparator we initialized in node.java
 
     for (int i = 0; i < children.size(); i++) {
         Node child = children.get(i);
-        boolean isLast = (i == children.size() - 1 ? true : false);
+        boolean isLast = (i == children.size() - 1 ? true : false); //Checking if this child is the last child of the dir or not
         String connector = isLast ? "└── " : "├── "; //if it is last the first version will be printed, otherwise second
-
+  //the connector is the same for file or directory, connector only depends whether last/ not last
         if (child instanceof Directory) {
             System.out.println(prefix + connector + child.getName() + "/");
             String childPrefix = prefix + (isLast ? "    " : "│   ");
