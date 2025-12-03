@@ -1,5 +1,8 @@
 import java.util.Hashtable;
 import java.util.Stack;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class FileSystem { // Most functions don't allow a path to be passed in, needs fixing later.
     Directory root;
@@ -172,5 +175,77 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
         return size;
     }
 
+    public void tree(){
+        printer(currentDirectory, 0);
+    }
+
+    private void printer(Node node, int spaces){
+        spaces += 5;
+        String FileorDir = currentDirectory.isFileorDir(node);
+        if (FileorDir.equals("F")){
+            System.out.println("|---" + node); 
+        }
+        else if (FileorDir.equals("D")){
+            Directory dir = (Directory) node;
+            List<Node> nodes = new ArrayList<>();
+            for (Node child : dir.getChildren().values()){
+            nodes.add(child);
+        }
+
+        printer(node, 5);
+        Collections.sort(nodes, new sortByName());
+        for (Node node1 : nodes){
+            System.out.println("|---" + node1); 
+        }
+        }     
+    }
+
+    public void grep(String pattern, String name) {
+
+        Node file = currentDirectory.getChild(name);
+
+        if (currentDirectory.isFileorDir(file) == "D") System.out.println("THIS IS A DIRECTORY AND NOT A FILE");  //error handle
+    else{
+        String text = ((File) file).getContent(); //extracting the text inside the file
+
+        int[] next = new int[pattern.length()]; // initializing a next array
+        boolean found = false; //default case is the pattern not being found
+        findNext(pattern, next); // we call the helper method findNext to get the next array
+
+        int i = 0;
+        int j = 0;
+        while (i <= (text.length() - pattern.length())) {
+            while ((j == -1) || (j < pattern.length() && text.charAt(i) == pattern.charAt(j))) {
+                i++;
+                j++;
+            }
+
+            if (j == pattern.length()) {
+                found = true;
+                j = next[j - 1]; 
+            } else {
+                j = next[j];
+            }
+        }
+        if (found) System.out.println("Match found");
+        else System.out.println("Match not found");
+    }
+    }
+
+    private void findNext(String p, int[] next) {
+        next[0] = -1;
+        int i = 0;
+        int j = -1;
+        while (i < p.length() - 1) {
+            while ((j == -1) || (p.charAt(i) == p.charAt(j))) {
+                i++;
+                j++;
+                next[i] = j; 
+            }
+            
+            j = next[j];
+        }
+    
+    }
     
 }

@@ -42,8 +42,14 @@ public class Test {
                     fs.rmr(tokens[1]);
                     break;
                 case "tree":
+                    fs.tree();
                     break;
                 case "grep":
+                    int IndexOfFirstQuote = input.indexOf('"'); // first "
+                    int IndexOfSecondQuote = input.lastIndexOf('"'); // second "
+                    String pattern = input.substring(IndexOfFirstQuote + 1, IndexOfSecondQuote); //there is a +1 to exclude writing the quotation mark itself
+                    String fileName = tokens[tokens.length - 1]; //the file name is always the last word when inputting this command
+                    fs.grep(pattern, fileName);
                     break;
                 case "du":
                     fs.du();
