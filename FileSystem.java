@@ -1,8 +1,4 @@
-import java.util.Hashtable;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 public class FileSystem { // Most functions don't allow a path to be passed in, needs fixing later.
     Directory root;
@@ -23,12 +19,27 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
                 currentDirectory = currentDirectory.getParent();
             else if (token.equals(".") || token.isEmpty()); // If token is . or empty, skip
             else {
-                currentDirectory = (Directory) currentDirectory.getChild(token);  // If token is a normal name, go to child
+                Node child;
+                try {child = currentDirectory.getChild(token);}
+                catch (NoSuchElementException e) {
+                    System.out.printf("Error: Path '%s' not found.\n", path);
+                    return;
+                }
+                if (child instanceof File) {
+                    System.out.printf("Error: '%s' is not a directory.\n", token);
+                    return;
+                }
+                assert child instanceof Directory;  // If child is not instanceof Directory, raise an error (should never happen since children can only be Files or directories, and we handled if it is a File)
+                currentDirectory = (Directory) child;  // If token is a normal name, go to child
             }
         }
     }
 
     public void mkdir(String name) {
+        if (currentDirectory.exists(name)) {
+            System.out.printf("Error: '%s' already exists.\n", name);
+            return;
+        }
         Directory newD = new Directory(name, currentDirectory);
         currentDirectory.addChild(newD);
     }
@@ -48,17 +59,18 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
     }
 
     public void ls() { // Lists all files/directories in current directory
+        String result = "";
         Hashtable<String, Node> children = currentDirectory.getChildren();
         for (String key : children.keySet()) {
             if (children.get(key) instanceof Directory) // Print directory names as is
-                System.out.println(key + "/\t");
+                result += (key + "/\t");
             else {
                 File f = (File) children.get(key);
                 int size = f.getSize();
-                System.out.println(key + " (" + size + "B)"); // Print file names with their sizes
+                result += (key + " (" + size + "B)"); // Print file names with their sizes
             }
         }
-        System.out.println();
+        System.out.println(result);
     }
 
     public void touch(String name, int size) { // Adds file given size
@@ -135,12 +147,12 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
                     currentDirectory.removeChild(name); //if its empty then just delete it 
                 }
                 else{
-                    System.out.println("The directory is not empty!"); // if not empty throw errow
+                    System.out.printf("Error: Cannot remove directory '%s'. It is not empty.\n", name); // if not empty throw error
                 }
             }
           }
 
-          else if (!found) System.out.println("Such a file or directory was not found");
+          else if (!found) System.out.printf("Error: '%s' not found.\n", name);
           //i said !found for purposes of better readability
     }
 
@@ -172,7 +184,7 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
     public void du(){
         Directory dir = currentDirectory;
         int diskUsage = du_helper(currentDirectory);
-        System.out.println("Disk Usage: " + diskUsage + "B");
+        System.out.println("Total size: " + diskUsage + "B");
     }
 
     public int du_helper(Node node){
@@ -221,7 +233,6 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
 
 
     public void grep(String pattern, String name) {
-
         Node file = currentDirectory.getChild(name);
 
         if (currentDirectory.isFileorDir(file) == "D") System.out.println("THIS IS A DIRECTORY AND NOT A FILE");  //error handle
@@ -247,8 +258,8 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
                 j = next[j];
             }
         }
-        if (found) System.out.println("Match found");
-        else System.out.println("Match not found");
+        if (found) System.out.printf("Pattern \"%s\" found in %s.%n", pattern, name);
+        else System.out.printf("Pattern \"%s\" not found in %s.%n", pattern, name);
     }
     }
 
