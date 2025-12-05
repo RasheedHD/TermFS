@@ -63,19 +63,37 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
 
     public void touch(String name, int size) { // Adds file given size
         Directory temp = currentDirectory;
-        File newF = new File(name, currentDirectory, size);
-        currentDirectory.addChild(newF);
+        String[] tokens = name.split("/");
+        for (String token: tokens) {
+            if (currentDirectory.exists(token)) // If directory exists, go inside it
+                cd(token);
+            else {
+                File newF = new File(token, currentDirectory, size); // Create new file if no directory exists with name token
+                currentDirectory.addChild(newF);
+            }
+        }
+        currentDirectory = temp;
+
     }
 
     public void echo(String content, String name) { // Adds file given content, or writes to existing file
-        if (currentDirectory.exists(name)) {
-            File child = (File) currentDirectory.getChild(name);
-            child.setContent(content);
+        Directory temp = currentDirectory;
+        String[] tokens = name.split("/");
+        for (String token: tokens) {
+            if (currentDirectory.exists(token)) // If directory exists, go inside it
+                cd(token);
+            else {
+                if (currentDirectory.exists(token)) {
+                    File child = (File) currentDirectory.getChild(token);
+                    child.setContent(content);
+                }
+                else {
+                    File newF = new File(token, currentDirectory, content);
+                    currentDirectory.addChild(newF);
+                }
+            }
         }
-        else {
-            File newF = new File(name, currentDirectory, content);
-            currentDirectory.addChild(newF);
-        }
+        currentDirectory = temp;
     }
 
     public void pwd() { // Prints the path in currentDirectory
