@@ -13,11 +13,13 @@ public class Test {
             String input = scnr.nextLine();
             String[] tokens = input.split(" "); //splitting the input by space
             switch(tokens[0]){ //so basically, in every kind of input, the first word is always the command and using a switch statement for better readability
-                case "mkdir": // WARNING: Currently breaks mkdir -p
+                case "mkdir": // WARNING: Currently breaks mkdir a b c
                     if (tokens[1].equals("-p")) // mkdir -p implementation
                         fs.mkdirp(tokens[2]);
                     else
-                        fs.mkdir(tokens[1]); // mkdir (no flag) implementation
+                        for (int i = 1; i < tokens.length; i++) {
+                            fs.mkdir(tokens[i]); // mkdir (no flag) implementation + mkdir a b c implementation
+                        }
                     break;
                 case "touch":
                     fs.touch(tokens[1], Integer.parseInt(tokens[2]));
