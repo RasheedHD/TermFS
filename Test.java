@@ -10,6 +10,8 @@ public class Test {
         System.out.println("----------------");
 
         while (true){
+            fs.pwd();
+            System.out.print("$ ");
             String input = scnr.nextLine();
             String[] tokens = input.split(" "); //splitting the input by space
             switch(tokens[0]){ //so basically, in every kind of input, the first word is always the command and using a switch statement for better readability

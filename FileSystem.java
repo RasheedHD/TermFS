@@ -111,7 +111,7 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
     public void pwd() { // Prints the path in currentDirectory
         Directory temp = currentDirectory; // Needed to return to original directory
         if (currentDirectory == root) { // Still in the root
-            System.out.println("/");
+            System.out.print("/");
             return;
         }
         String path = "/";
@@ -127,7 +127,7 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
             path = (path + names.pop() + "/");
         }
         currentDirectory = temp; // Returns to original directory
-        System.out.println(path.substring(0,path.length()-1));
+        System.out.print(path.substring(0,path.length()-1));
     }
 
     public void rm(String name){ //removes a file or an empty directory
