@@ -245,19 +245,15 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
 
         int i = 0;
         int j = 0;
-        while (i <= (text.length() - pattern.length())) {
-            while ((j == -1) || (j < pattern.length() && text.charAt(i) == pattern.charAt(j))) {
-                i++;
-                j++;
-            }
-
-            if (j == pattern.length()) {
-                found = true;
-                j = next[j - 1]; 
-            } else {
-                j = next[j];
-            }
+        while (i < text.length() && j < pattern.length()){
+            if (j == -1 || (text.charAt(i) == pattern.charAt(j))){
+                i++; j++;
+            } 
+            else  j = next[j];
         }
+
+        if (j == pattern.length()) {found = true; j = next[j - 1];}
+        else  j = next[j];
         if (found) System.out.printf("Pattern \"%s\" found in %s.%n", pattern, name);
         else System.out.printf("Pattern \"%s\" not found in %s.%n", pattern, name);
     }
@@ -268,13 +264,13 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
         int i = 0;
         int j = -1;
         while (i < p.length() - 1) {
-            while ((j == -1) || (p.charAt(i) == p.charAt(j))) { //j==-1 takes care of the case where the second element of a next array is always zero
+            if ((j == -1) || (p.charAt(i) == p.charAt(j))) { //j==-1 takes care of the case where the second element of a next array is always zero
                 i++;
                 j++;
                 next[i] = j; 
             }
             
-            j = next[j];
+            else j = next[j];
         }
     
     }
