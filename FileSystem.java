@@ -44,7 +44,7 @@ public class FileSystem {
         Directory temp = currentDirectory;
         String[] tokens = name.split("/");
         for (String token: tokens) {
-            if (currentDirectory.exists(token)) // If directory exists, go inside it
+            if (currentDirectory.exists(token) && tokens.length!=1) // If directory exists, go inside it
                 cd(token);
             else {
                 if (currentDirectory.exists(token)) {
