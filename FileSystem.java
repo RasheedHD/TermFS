@@ -15,8 +15,13 @@ public class FileSystem {
             currentDirectory = root;
         String[] tokens = path.split("/");
         for (String token : tokens) {
-            if (token.equals("..")) // If token is a parent, move up
+            if (token.equals("..")) { // If token is a parent, move up
+                if (currentDirectory == root) {
+                    System.out.println("Error: Cannot go higher than the root");
+                    break;
+                }
                 currentDirectory = currentDirectory.getParent();
+                }
             else if (token.equals(".") || token.isEmpty()); // If token is . or empty, skip
             else {
                 Node child;
