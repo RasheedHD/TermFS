@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class FileSystem { // Most functions don't allow a path to be passed in, needs fixing later.
+public class FileSystem {
     Directory root;
     Directory currentDirectory;
 
@@ -68,15 +68,15 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
     }
 
     public void ls() { // Lists all files/directories in current directory
-        String result = "";
+        StringBuilder result = new StringBuilder();
         Hashtable<String, Node> children = currentDirectory.getChildren();
         for (String key : children.keySet()) {
             if (children.get(key) instanceof Directory) // Print directory names as is
-                result += (key + "/\t");
+                result.append(key).append("/\t");
             else {
                 File f = (File) children.get(key);
                 int size = f.getSize();
-                result += (key + " (" + size + "B)"); // Print file names with their sizes
+                result.append(key).append(" (").append(size).append("B)"); // Print file names with their sizes
             }
         }
         System.out.println(result);
@@ -119,6 +119,28 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
     }
 
     public void pwd() { // Prints the path in currentDirectory
+        Directory temp = currentDirectory; // Needed to return to original directory
+        if (currentDirectory == root) { // Still in the root
+            System.out.println("/");
+            return;
+        }
+        String path = "/";
+        Stack<String> names = new Stack<>();
+        int length;
+        while (currentDirectory.getParent() != root) {
+            names.push(currentDirectory.getName());
+            currentDirectory = currentDirectory.getParent();
+        }
+        names.push(currentDirectory.getName());
+        length = names.toArray().length;
+        for (int i = 0; i < length; i++) {
+            path = (path + names.pop() + "/");
+        }
+        currentDirectory = temp; // Returns to original directory
+        System.out.println(path.substring(0,path.length()-1));
+    }
+
+    public void getPath() { // Prints the path in currentDirectory
         Directory temp = currentDirectory; // Needed to return to original directory
         if (currentDirectory == root) { // Still in the root
             System.out.print("/");
@@ -223,11 +245,11 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
    private void printer(Node node, String prefix) {
     Directory directory = (Directory) node;
     List<Node> children = new ArrayList<>(directory.getChildren().values()); //creating an array list of all children from the directory
-    Collections.sort(children, new sortByName()); //sort BY NAME using the comparator we initialized in node.java
+    children.sort(new sortByName()); //sort BY NAME using the comparator we initialized in node.java
 
     for (int i = 0; i < children.size(); i++) {
         Node child = children.get(i);
-        boolean isLast = (i == children.size() - 1 ? true : false); //Checking if this child is the last child of the dir or not
+        boolean isLast = (i == children.size() - 1); //Checking if this child is the last child of the dir or not
         String connector = isLast ? "└── " : "├── "; //if it is last the first version will be printed, otherwise second
   //the connector is the same for file or directory, connector only depends whether last/ not last
         if (child instanceof Directory) {

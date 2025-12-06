@@ -10,14 +10,14 @@ public class Test {
         System.out.println("----------------");
 
         while (true){
-            fs.pwd();
+            fs.getPath();
             System.out.print("$ ");
             String input = scnr.nextLine();
             String[] tokens = input.split(" "); //splitting the input by space
 
-            switch(tokens[0]){ //so basically, in every kind of input, the first word is always the command and using a switch statement for better readability
+            switch(tokens[0]){ //In every kind of input, the first word is always the command and using a switch statement for better readability
                 case "mkdir": //
-                    if (tokens.length == 1) {System.out.println("You forgot the argument!"); break;}
+                    if (tokens.length == 1) {System.out.println("Error: Not enough arguments"); break;}
                     if (tokens[1].equals("-p")) // mkdir -p implementation
                         fs.mkdirp(tokens[2]);
                     else
@@ -26,12 +26,15 @@ public class Test {
                         }
                     break;
                 case "touch":
-                    if (tokens.length == 1) {System.out.println("You forgot the argument!"); break;}
+                    if (tokens.length == 1) {System.out.println("Error: Not enough arguments"); break;}
                     fs.touch(tokens[1], Integer.parseInt(tokens[2]));
                     break;
                 case "echo": //first, ill have to get the content, this ill do by locating the two quotation marks and getting the text in between them
-                    if (tokens.length == 1) {System.out.println("You forgot the argument!"); break;}
+                    if (tokens.length == 1) {System.out.println("Error: Not enough arguments"); break;}
                     int IndexOfFirstQuot = input.indexOf('"'); // first "
+                    if (IndexOfFirstQuot == -1) {
+                        System.out.println("Error: Text not surrounded by quotation marks");
+                    }
                     int IndexOfSecondQuot = input.lastIndexOf('"'); // second "
                     String content = input.substring(IndexOfFirstQuot + 1, IndexOfSecondQuot); //there is a +1 to exclude writing the quotation mark itself
                     String file = tokens[tokens.length - 1]; //the file name is always the last word when inputting this command
@@ -41,14 +44,14 @@ public class Test {
                     fs.ls();
                     break;                                    //the rest are just calling the corresponding function according to input
                 case "cd":
-                    if (tokens.length == 1) {System.out.println("You forgot the argument!"); break;}
+                    if (tokens.length == 1) {System.out.println("Error: Not enough arguments"); break;}
                     fs.cd(tokens[1]);
                     break;
                 case "pwd":
                     fs.pwd();
                     break;
                 case "rm":
-                    if (tokens.length == 1) {System.out.println("You forgot the argument!"); break;}
+                    if (tokens.length == 1) {System.out.println("Error: Not enough arguments"); break;}
                     if (tokens[1].equals("-r")) // rm -r implementation
                         fs.rmr(tokens[2]);
                     else
@@ -58,7 +61,7 @@ public class Test {
                     fs.tree();
                     break;
                 case "grep":
-                    if (tokens.length == 1) {System.out.println("You forgot the argument!"); break;}
+                    if (tokens.length == 1) {System.out.println("Error: Not enough arguments"); break;}
                     int IndexOfFirstQuote = input.indexOf('"'); // first "
                     int IndexOfSecondQuote = input.lastIndexOf('"'); // second "
                     String pattern = input.substring(IndexOfFirstQuote + 1, IndexOfSecondQuote); //there is a +1 to exclude writing the quotation mark itself
@@ -68,7 +71,7 @@ public class Test {
                 case "du":
                     fs.du();
                     break;
-                default:      //when the input is not one of the commands, the case is handled by printing invalid command
+                default:      // When the input is not one of the commands, the case is handled by printing invalid command
                     System.out.println("\nInvalid command! Please try again");
                     break;
             }

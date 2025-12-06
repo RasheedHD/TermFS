@@ -28,7 +28,7 @@ public class Directory extends Node {
         return children.containsKey(name);
     }
 
-    public String isFileorDir(Node node) { // Returns F for files and D for directories // Delete if unused
+    public String isFileorDir(Node node) { // Returns F for files and D for directories
         if (node instanceof File)
             return "F";
         else if (node instanceof Directory)
