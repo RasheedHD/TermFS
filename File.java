@@ -26,5 +26,6 @@ public class File extends Node {
 
     public void setContent(String content) {
         this.content = content;
+        this.size = content.length();
     }
 }

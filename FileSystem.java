@@ -127,7 +127,7 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
         Stack<String> names = new Stack<>();
         int length;
         while (currentDirectory.getParent() != root) {
-            names.push(currentDirectory.getName()); // Incomplete path building.
+            names.push(currentDirectory.getName());
             currentDirectory = currentDirectory.getParent();
         }
         names.push(currentDirectory.getName());
