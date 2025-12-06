@@ -36,12 +36,21 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
     }
 
     public void mkdir(String name) {
-        if (currentDirectory.exists(name)) {
-            System.out.printf("Error: '%s' already exists.\n", name);
-            return;
+        Directory temp = currentDirectory;
+        String[] tokens = name.split("/");
+        for (String token: tokens) {
+            if (currentDirectory.exists(token)) // If directory exists, go inside it
+                cd(token);
+            else {
+                if (currentDirectory.exists(token)) {
+                    System.out.printf("Error: '%s' already exists.\n", token);
+                    return;
+                }
+                Directory newD = new Directory(token, currentDirectory);
+                currentDirectory.addChild(newD);
+            }
         }
-        Directory newD = new Directory(name, currentDirectory);
-        currentDirectory.addChild(newD);
+        currentDirectory = temp;
     }
 
     public void mkdirp(String path) {
