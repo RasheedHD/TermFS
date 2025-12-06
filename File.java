@@ -28,4 +28,8 @@ public class File extends Node {
         this.content = content;
         this.size = content.length();
     }
+
+    public void setSize(int n) {
+        this.size = n;
+    }
 }

@@ -110,6 +110,7 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
                 }
                 else {
                     File newF = new File(token, currentDirectory, content);
+                    newF.setSize(content.length());
                     currentDirectory.addChild(newF);
                 }
             }
@@ -242,9 +243,14 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
 
 
     public void grep(String pattern, String name) {
+
+        if (!currentDirectory.exists(name)) System.out.println("File with such a name was not found!");// checking for case where file doesnt exist
+
+        else {
+
         Node file = currentDirectory.getChild(name);
 
-        if (currentDirectory.isFileorDir(file) == "D") System.out.println("THIS IS A DIRECTORY AND NOT A FILE");  //error handle
+        if (currentDirectory.isFileorDir(file).equals("D")) System.out.println("THIS IS A DIRECTORY AND NOT A FILE");  //error handle
     else{
         String text = ((File) file).getContent(); //extracting the text inside the file
 
@@ -267,6 +273,7 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
         else System.out.printf("Pattern \"%s\" not found in %s.%n", pattern, name);
     }
     }
+}
 
     private void findNext(String p, int[] next) {
         next[0] = -1;
@@ -283,5 +290,5 @@ public class FileSystem { // Most functions don't allow a path to be passed in, 
         }
     
     }
-    
+
 }
